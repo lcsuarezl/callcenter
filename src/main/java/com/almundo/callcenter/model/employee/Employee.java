@@ -7,10 +7,9 @@ import org.apache.logging.log4j.Logger;
 
 import com.almundo.callcenter.config.Status;
 import com.almundo.callcenter.exception.CallCenterException;
-import com.almundo.callcenter.model.Resource;
 import com.almundo.callcenter.model.call.Call;
 
-public abstract class Employee implements Resource {
+public abstract class Employee  {
 
 	private Long id;
 	private Status status;

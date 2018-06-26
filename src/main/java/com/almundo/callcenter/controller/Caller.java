@@ -57,6 +57,7 @@ public class Caller implements Runnable {
 
 	private Call createCall(Long id) {
 		Call call = new Call(id, generateACD());
+		log.info(" created callId["+call.getId()+"]");
 		return call;
 	}
 

@@ -2,16 +2,11 @@ package com.almundo.callcenter.queue;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.almundo.callcenter.model.call.Call;
 
 public class CallQueue {
 	
 	private static CallQueue instance;
-	
-	private static final Logger log = LogManager.getLogger(CallQueue.class);
 	
 	private LinkedBlockingQueue<Call> incomingCalls;
 	private LinkedBlockingQueue<Call> answeredCalls;

@@ -14,7 +14,7 @@ import java.util.concurrent.Executors;
 
 import org.junit.Assert;
 
-public class CallerTest {
+public class CallCenterTest {
 
 	/**
 	 * Validate that Caller is able to make as many calls as you want with the
