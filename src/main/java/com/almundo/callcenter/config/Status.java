@@ -1,6 +1,6 @@
 package com.almundo.callcenter.config;
 
-public enum EmployeeStatus {
+public enum Status {
 	
 	FREE,
 	BUSSY;

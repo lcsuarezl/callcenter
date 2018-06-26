@@ -2,13 +2,19 @@ package com.almundo.callcenter.queue;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.almundo.callcenter.model.call.Call;
 
 public class CallQueue {
 	
 	private static CallQueue instance;
 	
-	private LinkedBlockingQueue<Call> calls;
+	private static final Logger log = LogManager.getLogger(CallQueue.class);
+	
+	private LinkedBlockingQueue<Call> incomingCalls;
+	private LinkedBlockingQueue<Call> answeredCalls;
 	
 	
 	public static CallQueue getInstance(){
@@ -19,19 +25,37 @@ public class CallQueue {
 	}
 	
 	private CallQueue(){
-		this.calls = new LinkedBlockingQueue<Call>();
+		this.incomingCalls = new LinkedBlockingQueue<Call>();
+		this.answeredCalls = new LinkedBlockingQueue<Call>();
 	}
 	
-	public void addCall(Call call) throws InterruptedException{
-		this.calls.put(call);
+	public void addIncomingCall(Call call) throws InterruptedException{
+		this.incomingCalls.put(call);
 	}
 	
-	public Call getCall(){
-		return this.calls.poll();
+	
+	public void addAnsweredCall(Call call) throws InterruptedException{
+		this.answeredCalls.put(call);
+	}
+	
+	public boolean isDone(){
+		if(this.incomingCalls.size() > 0)
+			return false; 
+		return true;
+	}
+	
+	public int getIncomingCallSize(){
+		return this.incomingCalls.size();
+	}
+	
+	public Call getNextCall(){
+		if(this.incomingCalls.size()>0)
+			return this.incomingCalls.poll();
+		return null;
 	}
 
-	public int getSize() {
-		return calls.size();
+	public LinkedBlockingQueue<Call> getAnsweredCalls() {
+		return answeredCalls;
 	}
-
+	
 }

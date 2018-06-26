@@ -9,6 +9,7 @@ public enum ConfigValues {
 	DURATION_MAX("com.almundo.callcenter.config.duration.max"),
 	THREADS_NUM("com.almundo.callcenter.config.threads.num"),
 	CALL_DELAY("com.almundo.callcenter.config.calls.delay"),
+	CALL_WAIT("com.almundo.callcenter.config.calls.wait.time"),
 	CALLS_TOTAL("com.almundo.callcenter.config.calls.total");
 	
 	private String conf;

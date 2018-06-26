@@ -13,26 +13,36 @@ import com.almundo.callcenter.queue.CallQueue;
 
 /**
  * Manage the call creation
+ * 
  * @author leon
  *
  */
 public class Caller implements Runnable {
-	
+
 	private Integer totalCalls;
 	private Integer callDelay;
 	private Integer durationMin;
 	private Integer durationMax;
 	private static final Logger log = LogManager.getLogger(Caller.class);
-	
-	public Caller(){
+
+	public Caller() {
 		super();
-		this.totalCalls =  Integer.valueOf(Config.getInstance().getProperty(ConfigValues.CALLS_TOTAL.conf()));
-		this.callDelay =  Integer.valueOf(Config.getInstance().getProperty(ConfigValues.CALL_DELAY.conf()));
+		this.totalCalls = Integer.valueOf(Config.getInstance().getProperty(ConfigValues.CALLS_TOTAL.conf()));
+		this.callDelay = Integer.valueOf(Config.getInstance().getProperty(ConfigValues.CALL_DELAY.conf()));
 		this.durationMin = Integer.valueOf(Config.getInstance().getProperty(ConfigValues.DURATION_MIN.conf()));
 		this.durationMax = Integer.valueOf(Config.getInstance().getProperty(ConfigValues.DURATION_MAX.conf()));
 	}
-	
-	
+
+	/**
+	 * @param totalCalls
+	 *            that will be enqueued
+	 * @param callDelay
+	 *            time betwen call creation
+	 * @param durationMin
+	 *            min call duration
+	 * @param durationMax
+	 *            max call duration
+	 */
 	public Caller(Integer totalCalls, Integer callDelay, Integer durationMin, Integer durationMax) {
 		super();
 		this.totalCalls = totalCalls;
@@ -41,36 +51,37 @@ public class Caller implements Runnable {
 		this.durationMax = durationMax;
 	}
 
-	private void makeCall() throws InterruptedException{
-		CallQueue.getInstance().addCall(createCall());
+	private void makeCall(Long id) throws InterruptedException {
+		CallQueue.getInstance().addIncomingCall(createCall(id));
 	}
-	
-	private Call createCall(){
-		Long millis=System.currentTimeMillis();
-		Call call = new Call(millis,generateACD());
-		log.info("createCall "+call.toString());
+
+	private Call createCall(Long id) {
+		Call call = new Call(id, generateACD());
 		return call;
 	}
-	
-	private Integer generateACD(){
+
+	/**
+	 * Generate the Average Call Duration time
+	 * 
+	 * @return
+	 */
+	private Integer generateACD() {
 		Random r = new Random();
-		int acd = r.nextInt(durationMax-durationMin) + durationMin;
+		int acd = r.nextInt(durationMax - durationMin) + durationMin;
 		return acd;
 	}
 
 	@Override
 	public void run() {
 		try {
-			log.info("Start makeCalls");
-			for(int i=0; i<totalCalls; i++){
+			for (int i = 0; i < totalCalls; i++) {
 				TimeUnit.SECONDS.sleep(callDelay);
-				makeCall();
+				makeCall((long) (i + 1));
 			}
-			log.info("End makeCalls");
 		} catch (InterruptedException e) {
 			log.catching(e);
 		}
-		
+
 	}
 
 }

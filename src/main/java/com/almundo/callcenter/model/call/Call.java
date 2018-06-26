@@ -2,21 +2,35 @@ package com.almundo.callcenter.model.call;
 
 public class Call {
 	
+	private Long id;
 	private Long createdTime;
 	private Long answeredTime;
 	private Long finisedTime;
 	private Integer acd;
-	private String answeredBy;
+	private String message;
 
-	public Call(Long createdTime, Integer acd) {
+	public Call(Long id, Integer acd) {
 		super();
-		this.createdTime = createdTime;
+		this.id=id;
+		this.createdTime = System.currentTimeMillis();
 		this.acd = acd;
 	}
+	
 
 	public Call() {
 		super();
+		this.createdTime = System.currentTimeMillis();
 	}
+
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 
 	public Long getCreatedTime() {
 		return createdTime;
@@ -43,12 +57,13 @@ public class Call {
 		this.finisedTime = finisedTime;
 	}
 
-	public String getAnsweredBy() {
-		return answeredBy;
+	public String getMessage() {
+		return message;
 	}
 
-	public void setAnsweredBy(String answeredBy) {
-		this.answeredBy = answeredBy;
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 	public Integer getAcd() {
@@ -59,13 +74,12 @@ public class Call {
 		this.acd = acd;
 	}
 
+
 	@Override
 	public String toString() {
-		return "Call [createdTime=" + createdTime + ", answeredTime=" + answeredTime + ", finisedTime=" + finisedTime
-				+ ", acd=" + acd + ", answeredBy=" + answeredBy + "]";
+		return "Call [id=" + id + ", createdTime=" + createdTime + ", answeredTime=" + answeredTime + ", finisedTime="
+				+ finisedTime + ", acd=" + acd + ", message=" + message + "]";
 	}
-	
-	
-	
+
 
 }

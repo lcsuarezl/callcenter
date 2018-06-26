@@ -5,69 +5,56 @@ import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.almundo.callcenter.config.EmployeeStatus;
+import com.almundo.callcenter.config.Status;
+import com.almundo.callcenter.exception.CallCenterException;
+import com.almundo.callcenter.model.Resource;
 import com.almundo.callcenter.model.call.Call;
 
-public abstract class Employee {
+public abstract class Employee implements Resource {
 
 	private Long id;
-	private String name;
-	private EmployeeStatus status;
-	
-	private static final Logger log = LogManager.getLogger(Employee.class);
-	
-	public Employee(Long id){
-		this.id = id;
-		this.status = EmployeeStatus.FREE;
-	}
-	
-	public Employee(String name, Long id){
-		this.name = name;
-		this.id = id;
-		this.status = EmployeeStatus.FREE;
-	}
-	
-	public abstract void answerCall(Call call);
+	private Status status;
 
-	protected void answerCallDefault(Call call, String msg)  {
-		log.info(msg);
+	private static final Logger log = LogManager.getLogger(Employee.class);
+
+	public Employee(Long id) {
+		this.id = id;
+		this.status = Status.FREE;
+	}
+
+	public abstract void answerCall(Call call) throws CallCenterException;
+
+	protected void answerCallDefault(Call call, String message) throws CallCenterException {
+		log.info(message);
+		if (this.status == Status.BUSSY)
+			throw new CallCenterException("Employee id: " + this.id + " can't attend call: " + call.getId());
+		if (call == null)
+			throw new CallCenterException("Employee id: " + this.id + " can't attend null call");
 		try {
-			this.status = EmployeeStatus.BUSSY;
-			call.setAnsweredBy(name);
+			this.status = Status.BUSSY;
+			call.setMessage(message);
 			call.setAnsweredTime(System.currentTimeMillis());
-	        TimeUnit.SECONDS.sleep(call.getAcd());
-	        call.setFinisedTime(System.currentTimeMillis());
-	    }
-	    catch (InterruptedException e) {
-	        e.printStackTrace();
-	    }
-		this.status = EmployeeStatus.FREE;
+			TimeUnit.SECONDS.sleep(call.getAcd());
+			call.setFinisedTime(System.currentTimeMillis());
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		this.status = Status.FREE;
 	}
 
 	public Long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public boolean isFree() {
+		if (this.status == Status.FREE)
+			return true;
+		return false;
 	}
 
-	public String getName() {
-		return name;
+	@Override
+	public String toString() {
+		return "Employee [id=" + id + ", status=" + status + "]";
 	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public EmployeeStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(EmployeeStatus status) {
-		this.status = status;
-	}
-
-	
 
 }
