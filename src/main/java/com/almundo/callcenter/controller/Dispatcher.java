@@ -85,8 +85,8 @@ public class Dispatcher implements Runnable {
 	public synchronized void processCallQueues() throws InterruptedException {
 		Call call = CallQueue.getInstance().getNextCall();
 		if (call == null) {
-			log.info("Waiting for incoming calls " + callWait + " seconds");
-			TimeUnit.SECONDS.sleep(callWait);
+			log.info("Waiting for incoming calls " + callWait + " milliseconds");
+			TimeUnit.MILLISECONDS.sleep(callWait);
 		}
 		Employee employee = OperatorPool.getInstance().getResource();
 		if (employee == null) {
@@ -140,9 +140,14 @@ public class Dispatcher implements Runnable {
 	/**
 	 * Stop processing calls
 	 * 
-	 * @return true when there are not more enqueued calls and waiting time is 0
+	 * @return true when there are not more enqueued calls <br/> 
+	 * waiting time is 0 or all calls were processed
 	 */
 	private boolean keepRuning() {
+		Integer callsTotal = Integer.valueOf(Config.getInstance().getProperty(ConfigValues.CALLS_TOTAL.conf()));
+		Integer callsAnswered = CallQueue.getInstance().getAnsweredCalls().size();
+		if(callsAnswered == callsTotal)
+			return false;
 		if (CallQueue.getInstance().getIncomingCallSize() > 0)
 			return true;
 		if (callWait > 0)

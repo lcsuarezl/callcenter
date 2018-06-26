@@ -13,7 +13,7 @@ public class Supervisor extends Employee {
 	public void answerCall(Call call) throws CallCenterException {
 		String msg = null;
 		if (call != null)
-			msg = "Supervisor id[" + getId() + "] is answering  call id[" + call.getId() + "] time " + call.getAcd()
+			msg = "Supervisor id[" + getId() + "] is answering the call id[" + call.getId() + "] duration " + call.getAcd()
 					+ " seconds";
 		super.answerCallDefault(call, msg);
 

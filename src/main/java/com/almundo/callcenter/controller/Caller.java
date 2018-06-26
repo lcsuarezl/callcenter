@@ -76,7 +76,7 @@ public class Caller implements Runnable {
 	public void run() {
 		try {
 			for (int i = 0; i < totalCalls; i++) {
-				TimeUnit.SECONDS.sleep(callDelay);
+				TimeUnit.MILLISECONDS.sleep(callDelay);
 				makeCall((long) (i + 1));
 			}
 		} catch (InterruptedException e) {

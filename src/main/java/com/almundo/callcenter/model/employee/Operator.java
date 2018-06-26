@@ -13,7 +13,7 @@ public class Operator extends Employee {
 	public void answerCall(Call call) throws CallCenterException {
 		String msg = null;
 		if (call != null)
-			msg = "Operator id[" + getId() + "] is answering  call id[" + call.getId() + "] time " + call.getAcd()
+			msg = "Operator id[" + getId() + "] is answering the call id[" + call.getId() + "] duration " + call.getAcd()
 					+ " seconds";
 		super.answerCallDefault(call, msg);
 	}

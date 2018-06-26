@@ -13,7 +13,7 @@ public class Director extends Employee {
 	public void answerCall(Call call) throws CallCenterException {
 		String msg = null;
 		if (call != null)
-			msg = "Director id[" + getId() + "] is answering  call id[" + call.getId() + "] time " + call.getAcd()
+			msg = "Director id[" + getId() + "] is answering the call id[" + call.getId() + "] duration " + call.getAcd()
 					+ " seconds";
 		super.answerCallDefault(call, msg);
 	}
