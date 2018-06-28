@@ -9,7 +9,7 @@ import com.almundo.callcenter.model.employee.Director;
 
 public class DirectorPool extends ResourcePool<Director> {
  
-	public static DirectorPool instance;
+	private static DirectorPool instance;
 
 	public static DirectorPool getInstance() {
 		if (instance == null) {
@@ -30,8 +30,8 @@ public class DirectorPool extends ResourcePool<Director> {
 			try {
 				this.unlocked.put(new Director((long) i));
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Thread.currentThread().interrupt();
+				log.catching(e);
 			}
 		});
 	}

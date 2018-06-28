@@ -20,8 +20,8 @@ public class CallQueue {
 	}
 	
 	private CallQueue(){
-		this.incomingCalls = new LinkedBlockingQueue<Call>();
-		this.answeredCalls = new LinkedBlockingQueue<Call>();
+		this.incomingCalls = new LinkedBlockingQueue<>();
+		this.answeredCalls = new LinkedBlockingQueue<>();
 	}
 	
 	public void addIncomingCall(Call call) throws InterruptedException{
@@ -34,9 +34,7 @@ public class CallQueue {
 	}
 	
 	public boolean isDone(){
-		if(this.incomingCalls.size() > 0)
-			return false; 
-		return true;
+		return this.incomingCalls.isEmpty();
 	}
 	
 	public int getIncomingCallSize(){
@@ -44,7 +42,7 @@ public class CallQueue {
 	}
 	
 	public Call getNextCall(){
-		if(this.incomingCalls.size()>0)
+		if(this.incomingCalls.isEmpty())
 			return this.incomingCalls.poll();
 		return null;
 	}

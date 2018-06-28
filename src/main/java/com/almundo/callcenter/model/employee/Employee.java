@@ -9,21 +9,21 @@ import com.almundo.callcenter.config.Status;
 import com.almundo.callcenter.exception.CallCenterException;
 import com.almundo.callcenter.model.call.Call;
 
-public abstract class Employee  {
+public abstract class Employee {
 
 	private Long id;
 	private Status status;
 
-	private static final Logger log = LogManager.getLogger(Employee.class);
+	protected static final Logger log = LogManager.getLogger(Employee.class);
 
 	public Employee(Long id) {
 		this.id = id;
 		this.status = Status.FREE;
 	}
 
-	public abstract void answerCall(Call call) throws CallCenterException;
+	public abstract void answerCall(Call call) throws CallCenterException, InterruptedException;
 
-	protected void answerCallDefault(Call call, String message) throws CallCenterException {
+	protected void answerCallDefault(Call call, String message) throws CallCenterException, InterruptedException {
 		log.info(message);
 		if (this.status == Status.BUSSY)
 			throw new CallCenterException("Employee id: " + this.id + " can't attend call: " + call.getId());
@@ -36,7 +36,8 @@ public abstract class Employee  {
 			TimeUnit.SECONDS.sleep(call.getAcd());
 			call.setFinisedTime(System.currentTimeMillis());
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			log.catching(e);
+			throw e;
 		}
 		this.status = Status.FREE;
 	}
@@ -46,9 +47,7 @@ public abstract class Employee  {
 	}
 
 	public boolean isFree() {
-		if (this.status == Status.FREE)
-			return true;
-		return false;
+		return (this.status == Status.FREE)?true:false;
 	}
 
 	@Override

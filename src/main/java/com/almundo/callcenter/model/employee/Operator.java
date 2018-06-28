@@ -10,7 +10,7 @@ public class Operator extends Employee {
 	}
 
 	@Override
-	public void answerCall(Call call) throws CallCenterException {
+	public void answerCall(Call call) throws CallCenterException, InterruptedException {
 		String msg = null;
 		if (call != null)
 			msg = "Operator id[" + getId() + "] is answering the call id[" + call.getId() + "] duration " + call.getAcd()

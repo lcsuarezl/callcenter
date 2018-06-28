@@ -9,7 +9,7 @@ import java.util.stream.*;
 
 public class OperatorPool extends ResourcePool<Operator> {
 	
-	public static OperatorPool instance;
+	private static OperatorPool instance;
 	
 	public static OperatorPool getInstance(){
 		if(instance == null){
@@ -30,8 +30,8 @@ public class OperatorPool extends ResourcePool<Operator> {
 			try {
 				this.unlocked.put(new Operator((long)(1000 + i)));
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Thread.currentThread().interrupt();
+				log.catching(e);
 			}
 		});
 	}

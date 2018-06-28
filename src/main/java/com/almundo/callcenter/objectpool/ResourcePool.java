@@ -2,19 +2,26 @@ package com.almundo.callcenter.objectpool;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
 
 public abstract class ResourcePool<T> {
 
 	
-	protected LinkedBlockingQueue<T> locked, unlocked;
+	protected LinkedBlockingQueue<T> locked;
+	protected LinkedBlockingQueue<T> unlocked;
 	
 	protected Integer ammount;
+	
+	protected static final Logger log = LogManager.getLogger(ResourcePool.class);
 	
 	protected abstract void loadPool() ;
 
 	public synchronized T getResource() throws InterruptedException {
 		T t = null;
-		if (unlocked.size() > 0) {
+		if (unlocked.isEmpty()) {
 			t = unlocked.poll();
 			locked.put(t);
 		}

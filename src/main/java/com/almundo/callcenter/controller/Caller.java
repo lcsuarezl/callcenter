@@ -68,8 +68,7 @@ public class Caller implements Runnable {
 	 */
 	private Integer generateACD() {
 		Random r = new Random();
-		int acd = r.nextInt(durationMax - durationMin) + durationMin;
-		return acd;
+		return  r.nextInt(durationMax - durationMin) + durationMin;
 	}
 
 	@Override
@@ -80,6 +79,7 @@ public class Caller implements Runnable {
 				makeCall((long) (i + 1));
 			}
 		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
 			log.catching(e);
 		}
 

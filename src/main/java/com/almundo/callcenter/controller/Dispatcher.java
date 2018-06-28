@@ -32,7 +32,6 @@ public class Dispatcher implements Runnable {
 
 	private Integer callWait;
 	
-	private static Integer THREADS_NUM;
 
 	public Dispatcher() {
 		this.callWait = Integer.valueOf(Config.getInstance().getProperty(ConfigValues.CALL_WAIT.conf()));
@@ -48,19 +47,19 @@ public class Dispatcher implements Runnable {
 	}
 	
 	
-	public static void main(String args[]) throws Exception {
+	public static void main(String[] args) throws Exception {
 		Long startTime = System.currentTimeMillis();
-		THREADS_NUM = Integer.valueOf(Config.getInstance().getProperty(ConfigValues.THREADS_NUM.conf()));
+		int threadNum = Integer.parseInt(Config.getInstance().getProperty(ConfigValues.THREADS_NUM.conf()));
 		log.info("Start at " + startTime);
 
-		ExecutorService executorService = Executors.newFixedThreadPool(THREADS_NUM);
+		ExecutorService executorService = Executors.newFixedThreadPool(threadNum);
 		
 		CallQueue.getInstance();
 		OperatorPool.getInstance();
 		SupervisorPool.getInstance();
 		DirectorPool.getInstance();
 		//create dispatcher threads
-		for (int i = 1; i < THREADS_NUM; i++) {
+		for (int i = 1; i < threadNum; i++) {
 			Runnable dispatcher = new Dispatcher();
 			executorService.execute(dispatcher);
 		}
@@ -71,7 +70,7 @@ public class Dispatcher implements Runnable {
 
 		}
 		log.info("Calls processed:");
-		CallQueue.getInstance().getAnsweredCalls().forEach((call) -> log.info(call.toString()));
+		CallQueue.getInstance().getAnsweredCalls().forEach(call -> log.info(call.toString()));
 		Long finishTime = System.currentTimeMillis();
 		log.info("Finished at " + finishTime + " Total time " + ((finishTime - startTime)));
 	}
@@ -150,9 +149,7 @@ public class Dispatcher implements Runnable {
 			return false;
 		if (CallQueue.getInstance().getIncomingCallSize() > 0)
 			return true;
-		if (callWait > 0)
-			return true;
-		return false;
+		return (callWait > 0)?true:false;
 	}
 
 	@Override
@@ -161,6 +158,7 @@ public class Dispatcher implements Runnable {
 			try {
 				processCallQueues();
 			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
 				log.catching(e);
 			}
 		}

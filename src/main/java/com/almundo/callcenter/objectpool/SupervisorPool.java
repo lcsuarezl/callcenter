@@ -9,7 +9,7 @@ import com.almundo.callcenter.model.employee.Supervisor;
 
 public class SupervisorPool extends ResourcePool<Supervisor> {
 
-	public static SupervisorPool instance;
+	private static SupervisorPool instance;
 
 	public static SupervisorPool getInstance() {
 		if (instance == null) {
@@ -30,7 +30,8 @@ public class SupervisorPool extends ResourcePool<Supervisor> {
 			try {
 				this.unlocked.put(new Supervisor((long) (100+i)));
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				Thread.currentThread().interrupt();
+				log.catching(e);
 			}
 		});
 	}
