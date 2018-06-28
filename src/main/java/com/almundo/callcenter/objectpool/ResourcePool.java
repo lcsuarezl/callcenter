@@ -21,7 +21,7 @@ public abstract class ResourcePool<T> {
 
 	public synchronized T getResource() throws InterruptedException {
 		T t = null;
-		if (unlocked.isEmpty()) {
+		if (!unlocked.isEmpty()) {
 			t = unlocked.poll();
 			locked.put(t);
 		}

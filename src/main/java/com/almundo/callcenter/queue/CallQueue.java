@@ -42,9 +42,7 @@ public class CallQueue {
 	}
 	
 	public Call getNextCall(){
-		if(this.incomingCalls.isEmpty())
-			return this.incomingCalls.poll();
-		return null;
+		return this.incomingCalls.poll();
 	}
 
 	public LinkedBlockingQueue<Call> getAnsweredCalls() {

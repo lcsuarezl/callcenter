@@ -86,6 +86,7 @@ public class Dispatcher implements Runnable {
 		if (call == null) {
 			log.info("Waiting for incoming calls " + callWait + " milliseconds");
 			TimeUnit.MILLISECONDS.sleep(callWait);
+			return;
 		}
 		Employee employee = OperatorPool.getInstance().getResource();
 		if (employee == null) {
